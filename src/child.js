@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { TransactionContext } from './transContext';
 
 function Child() {
 
-    let transactions = [
-        { amount: 500, desc: 'Cash' },
-        { amount: 4500, desc: 'Camera' },
-        { amount: 55500, desc: 'Car' }
-    ]
+    let { transactions } = useContext(TransactionContext);
+    let [newDesc, setDesc] = useState("");
+    let [newAmount, setAmount] = useState(0);
+
+    const handleAdditoin = (event) => {
+        event.preventDefault();
+        console.log(newDesc, newAmount);
+    }
 
     return (
         <div className='container'>
@@ -25,7 +29,7 @@ function Child() {
             <ul className="transaction-list">
                 {transactions.map((transObj, ind) => {
                     return (
-                        <li>
+                        <li key={ind}>
                             <span>{transObj.desc}</span>
                             <span>{transObj.amount}</span>
                         </li>
@@ -36,15 +40,15 @@ function Child() {
             <h3>Add New Transaction</h3>
             <hr />
 
-            <form className='transaction-form'>
+            <form className='transaction-form' onSubmit={handleAdditoin}>
                 <label htmlFor="description">
                     Enter Description <br />
-                    <input type="text" required />
+                    <input type="text" onChange={(e)=> setDesc(e.target.value)} required />
                 </label>
                 <br />
                 <label htmlFor="amount">
                     Enter Amount <br />
-                    <input type="number" required />
+                    <input type="number" onChange={(e) => setAmount(e.target.value)} required />
                 </label>
                 <br />
                 <input type="submit" className="btnSubmit" value='Add Transaction' />
